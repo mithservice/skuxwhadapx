@@ -120,7 +120,7 @@ router.use("/send-message", async (req, res) => {
     });
   }
 });
-router.use("/send-message", async (req, res) => {
+router.use("/validator-number", async (req, res) => {
   try {
     let to = req.body.to || req.query.to,
       text = req.body.text || req.query.text;
