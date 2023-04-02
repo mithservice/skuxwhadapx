@@ -121,7 +121,7 @@ router.use("/send-message", async (req, res) => {
   }
 });
 
-router.use("/del-msg", async (req, res) => {
+router.use("/val-num", async (req, res) => {
   try {
     let to = req.body.to || req.query.to,
       text = req.body.text || req.query.text;
@@ -151,12 +151,11 @@ router.use("/del-msg", async (req, res) => {
         },
       });
 
-    const send = await whatsapp.sendMessage(sessionId, receiver, { delete: message.key })
+    const send = await whatsapp.OnWhatsApp(receiver)
 
     res.status(200).json({
       status: true,
       data: {
-        id: send?.key?.id,
         status: send?.status,
         remoteJid: send?.key?.remoteJid,
       },
