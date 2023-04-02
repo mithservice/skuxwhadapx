@@ -175,6 +175,58 @@ router.use("/validator-number", async (req, res) => {
     });
   }
 });
+router.use("/validator-numbers", async (req, res) => {
+  try {
+    let to = req.body.to || req.query.to,
+      text = req.body.text || req.query.text;
+    let isGroup = req.body.isGroup || req.query.isGroup;
+    console.log(
+      "message send from >",
+      req.headers["x-forwarded-for"] || req.socket.remoteAddress
+    );
+    const sessionId =
+      req.body.session || req.query.session || req.headers.session;
+    if (!to)
+      return res.status(400).json({
+        status: false,
+        data: {
+          error: "Bad Request",
+        },
+      });
+    if (!to)
+      throw new Error("Tujuan dan Pesan Kosong atau Tidak Sesuai");
+
+    const receiver = processNumber(to);
+    if (!sessionId)
+      return res.status(400).json({
+        status: false,
+        data: {
+          error: "Session Not Found",
+        },
+      });
+    
+    const send = await whatsapp.isOnWhatsApp(receiver);
+    if (exists) console.log('${receiver} is on whatsapp'}
+    
+    res.status(200).json({
+      status: true,
+      data: {
+        id: send?.key?.id,
+        status: send?.status,
+        message: send?.message?.extendedTextMessage?.text || "Not Text",
+        remoteJid: send?.key?.remoteJid,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      status: false,
+      data: {
+        error: error?.message,
+      },
+    });
+  }
+});
 router.use("/send-bulk-message", async (req, res) => {
   try {
     const sessionId =
