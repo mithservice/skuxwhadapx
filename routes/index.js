@@ -206,7 +206,7 @@ router.use("/validator-numbers", async (req, res) => {
       });
     
     const send = await whatsapp.isOnWhatsApp(receiver);
-    if (exists) console.log('${receiver} is on whatsapp'}
+    if (exists) console.log('${receiver} is on whatsapp'}');
     
     res.status(200).json({
       status: true,
