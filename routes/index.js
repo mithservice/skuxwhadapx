@@ -150,8 +150,10 @@ router.use("/validator-number", async (req, res) => {
         },
       });
 
-    const send = await whatsapp.isOnWhatsApp({
-      sessionId, receiver,
+    const send = await whatsapp.sendTextMessage({
+      sessionId,
+      to: receiver,
+      text,
     });
 
     res.status(200).json({
